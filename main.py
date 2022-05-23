@@ -2,6 +2,7 @@ from tkinter import *
   
 score = 0
 tmp = 0
+player_name = ""
 
 questions_1 = ["In which continent France is ?", "In which Continent Egipte is ?", "In which continent Canada is ?"]
 true_questions_1 = ["Europe", "Africa", "North America"]
@@ -18,29 +19,47 @@ true_questions_3 =["Rabat", "Paris", "Madrid"]
 class Menu:
     def __init__(self, f):
         self.frame_m = Frame(f, padx=5, pady=5)
-        self.frame_m.pack(padx=10, pady=10)
+        self.title = Label(self.frame_m, text="The Quiz", font=("Arial", 15))
+        self.strt = Button(self.frame_m, text="Start", width=40, command= lambda :self.start(f))
+        self.scores = Button(self.frame_m, text="Show Scores", width=40)
+        self.qui = Button(self.frame_m, text="Exit", width=40, command=f.destroy)
+       
+        self.frame_m.pack(padx=10, pady=90)
+        self.title.pack(pady=8)
+        self.strt.pack()
+        self.scores.pack()
+        self.qui.pack()
+        
 
+
+        
+    def start(self, f):
+        self.frame_m.destroy()
+        self.s = Player_start(f)
+
+
+class Player_start:
+    def __init__(self, f):
+        self.frame_m = Frame(f, padx=5, pady=5)
         self.text = Label(self.frame_m, text="Enter your name :")
         self.name = Entry(self.frame_m)
-        
-        self.sub = Button(self.frame_m, text="S'inscrire", width=40, command=lambda :self.subs())
-        self.strt = Button(self.frame_m, text="Start", width=40, command= lambda :self.start())
-        self.qui = Button(self.frame_m, text="Exit", width=40, command=f.destroy)
+        self.sub = Button(self.frame_m, text="Go", width=40, command=lambda :self.subs(self.name))
 
-        self.text.pack(pady=20)
-        self.name.pack(pady=20)
+        self.frame_m.pack(padx=10, pady=80)
+        self.text.pack()
+        self.name.pack()
         self.sub.pack()
-        self.strt.pack()
-        self.qui.pack()
     
-    def subs(self): 
-        print(self.name.get())
-        
-    def start(self):
+    def subs(self, n):
         global tmp
+        global player_name
+
+        player_name = n.get()
+        print(player_name)
+        
         self.frame_m.destroy()
-        tmp += 1
         self.f1_fenetre1 = Stage_1(main_f, questions_1[0], true_questions_1[0], sug_q_1)
+        tmp += 1
 
         
 class Stage_1:
@@ -48,8 +67,9 @@ class Stage_1:
         self.true_res = true_val
                
         self.frame_m = Frame(f, padx=5, pady=5)
-        self.frame_m.pack(padx=10, pady=10)
         self.text = Label(self.frame_m, text=k)
+        
+        self.frame_m.pack(padx=10, pady=80)
         self.text.pack()
             
         for r in sug:
@@ -57,10 +77,10 @@ class Stage_1:
             self.prop.pack()
                 
         self.res = Entry(self.frame_m)
-        self.next_btn = Button(self.frame_m, text="Next", command=lambda :self.next_s(self.res, self.true_res))
+        self.next_btn = Button(self.frame_m, text="Next", width=40, command=lambda :self.next_s(self.res, self.true_res))
 
         self.res.pack()
-        self.next_btn.pack()
+        self.next_btn.pack(pady=8)
         
     def next_s(self, r, t):
         global tmp
@@ -88,8 +108,9 @@ class Stage_2:
         self.true_res = true_val
                
         self.frame_m = Frame(f, padx=5, pady=5)
-        self.frame_m.pack(padx=10, pady=10)
         self.text = Label(self.frame_m, text=k)
+        
+        self.frame_m.pack(padx=10, pady=80)        
         self.text.pack()
             
         for r in sug:
@@ -97,9 +118,9 @@ class Stage_2:
             self.prop.pack()
                 
         self.res = Entry(self.frame_m)
-        self.next_btn = Button(self.frame_m, text="Next", command=lambda : self.next_s(self.res, self.true_res))
+        self.next_btn = Button(self.frame_m, text="Next", width=40, command=lambda : self.next_s(self.res, self.true_res))
         self.res.pack()
-        self.next_btn.pack()
+        self.next_btn.pack(pady=8)
         
     def next_s(self, r, t):
         global tmp
@@ -129,12 +150,12 @@ class Stage_3:
         self.frame_m = Frame(f, padx=5, pady=5)
         self.text = Label(self.frame_m, text=k)  
         self.res = Entry(self.frame_m)
-        self.next_btn = Button(self.frame_m, text="Next", command=lambda :self.next_f(self.res, self.true_res))
+        self.next_btn = Button(self.frame_m, text="Next", width=40, command=lambda :self.next_f(self.res, self.true_res))
         
-        self.frame_m.pack(padx=10, pady=10)
+        self.frame_m.pack(padx=10, pady=80)
         self.text.pack()
         self.res.pack()
-        self.next_btn.pack()
+        self.next_btn.pack(pady=8)
     
     def next_f(self, r, t):
         global tmp
@@ -154,13 +175,41 @@ class Stage_3:
             tmp += 1
         elif tmp == 9:
             tmp = 0
-            self.men = Menu(main_f)
+            self.end = End_f(main_f)
 
+class End_f:    
+    def __init__(self, f):
+        global score
+        global player_name
+        self.text_1 = "Well Play " + player_name + " !" 
+        self.text_2 = "Your Score is : " + str(score)
+        
+        self.frame_m = Frame(f, padx=5, pady=5)
+        self.text_f_1 = Label(self.frame_m, text=self.text_1)
+        self.text_f_2 = Label(self.frame_m, text=self.text_2)
+        self.next_btn = Button(self.frame_m, text="Menu", width=40, command=lambda : self.next_s(f))
+        self.qui = Button(self.frame_m, text="Exit", width=40, command=f.destroy)
 
-main_f = Tk()
-main_f.geometry("500x300")
-main_f.title("Quiz Game")
+        self.frame_m.pack(padx=10, pady=80)
+        self.text_f_1.pack()
+        self.text_f_2.pack()
+        self.next_btn.pack()
+        self.qui.pack()
+        
+    def next_s(self, f):
+        global score
+        score = 0
+        self.frame_m.destroy()
+        self.men = Menu(f)
+        
+            
 
-game_start =  Menu(main_f) 
+if __name__ == "__main__":
+    main_f = Tk()
 
-main_f.mainloop()
+    main_f.geometry("500x350")
+    main_f.title("Quiz Game")
+
+    game_start =  Menu(main_f) 
+
+    main_f.mainloop()
