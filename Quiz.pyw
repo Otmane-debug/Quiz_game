@@ -93,7 +93,7 @@ class History:
         self.i = 1
         
         for k in self.sorted_data:
-            self.text_e = "{} - Player {} score : {}".format(self.i, k, self.dic_data[k])            
+            self.text_e = "Player {} score : {}".format(k, self.dic_data[k])            
             self.lab = Label(self.frame_m, text=self.text_e, bg="#FF8C00", font=("Arial", 10)).pack()
             self.i += 1
             if self.i == 6:
@@ -133,7 +133,7 @@ class Stage_1:
         global tmp
         global score
 
-        if r.get() == t:
+        if r.get() == t.lower():
             score += 1
             
         print(score)
@@ -174,7 +174,7 @@ class Stage_2:
         global tmp
         global score
         
-        if r.get() == t:
+        if r.get() == t.lower():
             score += 1
         print(score)
         
@@ -208,7 +208,7 @@ class Stage_3:
         global tmp
         global score
 
-        if r.get() == t:
+        if r.get() == t or r.get() == t.lower():
             score += 1
             
         print(score)
